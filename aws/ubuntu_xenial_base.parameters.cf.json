@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "webadmin"
+  }, 
+  {
+    "ParameterKey": "Vpc",
+    "ParameterValue": "vpc-5b3d0b3d"
+  }, 
+  {
+    "ParameterKey": "SubnetId",
+    "ParameterValue": "subnet-5e1c6438"
+  }
+]

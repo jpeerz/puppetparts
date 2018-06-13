@@ -1,0 +1,118 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Base Ubuntu Xenial Puppet Ready",
+    "Resources": {
+        "Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-db710fa3",
+                "InstanceType": "t2.micro",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SubnetId": {
+                    "Ref": "SubnetId"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "HttpSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "os",
+                        "Value": "ubuntu"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Init": {
+                    "config": {
+                        "packages": {
+                            "apt": {
+                                "awscli": [],
+                                "git-core": [],
+                                "puppet": []
+                            }
+                        },
+                        "files": {
+                        "/opt/puppet.headless.conf": {
+                            "content": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "[main]\n",
+                                        "logdir=/var/log/puppet\n",
+                                        "vardir=/var/lib/puppet\n",
+                                        "rundir=/var/run/puppet\n",
+                                        "ssldir=/etc/puppet/ssl\n",
+                                        "factpath=/var/lib/puppet/lib/facter:/var/lib/puppet/facts\n",
+                                        "pluginsync=true\n"
+                                    ]
+                                ]
+                            },
+                            "mode": "0644",
+                            "owner": "root",
+                            "group": "root"
+                          }
+                        },
+                        "commands": {
+                            "01refresh_ubuntu_repo": {
+                                "command": "apt-get update && apt-get upgrade -y"
+                            },
+                            "02print_distro_version": {
+                                "command": "lsb_release -cas"
+                            }
+                        }
+                    }
+                }
+            },
+        },
+        "HttpSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "web host",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "ToPort": "22"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "80",
+                        "IpProtocol": "tcp",
+                        "ToPort": "80"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "443",
+                        "IpProtocol": "tcp",
+                        "ToPort": "443"
+                    }
+                ],
+                "VpcId": {
+                    "Ref": "Vpc"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "KeyName": {
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "Description": "ssh key pair",
+            "ConstraintDescription": "must be the name of an existing keys."
+        },
+        "SubnetId": {
+            "Type": "AWS::EC2::Subnet::Id",
+            "ConstraintDescription": "must be an existing subnet.",
+            "Description": "subnet"
+        },
+        "Vpc": {
+            "Type": "AWS::EC2::VPC::Id",
+            "ConstraintDescription": "please provide an existing vpc",
+            "Description": "vpc",
+        }
+    }
+}

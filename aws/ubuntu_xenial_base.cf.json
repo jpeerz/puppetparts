@@ -1,0 +1,79 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Base Ubuntu Xenial",
+    "Resources": {
+        "Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-db710fa3",
+                "InstanceType": "t2.micro",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SubnetId": {
+                    "Ref": "SubnetId"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "HttpSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "os",
+                        "Value": "ubuntu"
+                    }
+                ]
+            }
+        },
+        "HttpSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "web host",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "ToPort": "22"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "80",
+                        "IpProtocol": "tcp",
+                        "ToPort": "80"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "443",
+                        "IpProtocol": "tcp",
+                        "ToPort": "443"
+                    }
+                ],
+                "VpcId": {
+                    "Ref": "Vpc"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "KeyName": {
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing keys.",
+            "Description": "ssh key pair",
+            "Default":"webadmin"
+        },
+        "SubnetId": {
+            "Type": "AWS::EC2::Subnet::Id",
+            "ConstraintDescription": "must be an existing subnet.",
+            "Description": "subnet",
+            "Default":"vpc-5b3d0b3d"
+        },
+        "Vpc": {
+            "Type": "AWS::EC2::VPC::Id",
+            "ConstraintDescription": "please provide an existing vpc",
+            "Description": "vpc",
+            "Default":"subnet-5e1c6438"
+        }
+    }
+}
