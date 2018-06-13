@@ -1,6 +1,6 @@
 ## Minimal values for ES
--Xms4g
--Xmx4g
+-Xms512m
+-Xmx512m
 -XX:+UseConcMarkSweepGC
 -XX:CMSInitiatingOccupancyFraction=75
 -XX:+UseCMSInitiatingOccupancyOnly
