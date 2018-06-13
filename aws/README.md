@@ -23,6 +23,3 @@
 ## review and connect to new machine
 
     ssh -i ~/.ssh/webadmin.pem ubuntu@ec2-54-245-203-83.us-west-2.compute.amazonaws.com
-
-
-
