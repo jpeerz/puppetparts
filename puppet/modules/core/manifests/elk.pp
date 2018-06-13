@@ -69,8 +69,7 @@ service { "elasticsearch":
     subscribe => File["/etc/elasticsearch/elasticsearch.yml"]
 }
 # required on client machine
-$elasticsearch_server_port  = 9200
-$filebeat_conf              = "core/filebeat.min.yml"
+$filebeat_conf = "core/filebeat.min.yml"
 package {["filebeat"]:
     ensure  => installed,
     require => Exec['apt_upgate_elastic_repo']   
