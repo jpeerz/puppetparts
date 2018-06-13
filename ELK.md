@@ -57,9 +57,10 @@ Create fresh machine
 
 > view **ELK components the big picture**
 
-ssh -i ~/.ssh/webadmin.pem ubuntu@ec2-54-200-150-108.us-west-2.compute.amazonaws.com
+Connect to fresh boxes
 
-ssh -i ~/.ssh/webadmin.pem ubuntu@ec2-54-218-122-25.us-west-2.compute.amazonaws.com
+    ssh -i ~/.ssh/webadmin.pem ubuntu@ec2-54-200-150-108.us-west-2.compute.amazonaws.com
+    ssh -i ~/.ssh/webadmin.pem ubuntu@ec2-54-218-122-25.us-west-2.compute.amazonaws.com
 
 Install IaC software
 
@@ -73,8 +74,7 @@ Deploy Java
     puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/java.pp
 
 Deploy ELK
-172.31.17.3
-172.31.24.222
+
     vi /opt/puppetparts/puppet/modules/core/manifests/elasticsearch.pp
     vi /opt/puppetparts/puppet/modules/core/manifests/filebeat.pp
     puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/elasticsearch.pp
@@ -109,16 +109,19 @@ Search in [Kibana Console](https://www.elastic.co/guide/en/kibana/5.6/console-ki
         }
     }
     }
-GET filebeat-2018.06.13/_search 
-{
-    "query": { 
-        "bool": { 
-        "must": [
-            { "match": { "message": "update_mapping" }}  
-        ]
+
+Serch in specific index
+
+    GET filebeat-2018.06.13/_search 
+    {
+        "query": { 
+            "bool": { 
+            "must": [
+                { "match": { "message": "update_mapping" }}  
+            ]
+            }
         }
     }
-}
 
 
 Search from cmd line via REST
@@ -153,8 +156,10 @@ Search from cmd line via REST
     }
     '
 
-https://www.elastic.co/guide/en/kibana/5.6/field-filter.html
+More docs
 
-https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-match-query.html
+* https://www.elastic.co/guide/en/kibana/5.6/field-filter.html
 
-https://www.elastic.co/guide/en/beats/packetbeat/current/load-kibana-dashboards.html
+* https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-match-query.html
+
+* https://www.elastic.co/guide/en/beats/packetbeat/current/load-kibana-dashboards.html
