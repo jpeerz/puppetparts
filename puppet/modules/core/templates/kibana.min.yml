@@ -1,0 +1,31 @@
+server.port: "<%= @kibana_server_port %>"
+server.host: "<%= @kibana_server_ip %>"
+#server.basePath: ""
+#server.maxPayloadBytes: 1048576
+server.name: "my-kibana"
+elasticsearch.url: "http://<%= @elasticsearch_server_ip %>:<%= @elasticsearch_server_port %>"
+#elasticsearch.preserveHost: true
+#kibana.index: ".kibana"
+#kibana.defaultAppId: "discover"
+#elasticsearch.username: "user"
+#elasticsearch.password: "pass"
+#server.ssl.enabled: false
+#server.ssl.certificate: /path/to/your/server.crt
+#server.ssl.key: /path/to/your/server.key
+#elasticsearch.ssl.certificate: /path/to/your/client.crt
+#elasticsearch.ssl.key: /path/to/your/client.key
+#elasticsearch.ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
+#elasticsearch.ssl.verificationMode: full
+#elasticsearch.pingTimeout: 1500
+#elasticsearch.requestTimeout: 30000
+#elasticsearch.requestHeadersWhitelist: [ authorization ]
+#elasticsearch.customHeaders: {}
+#elasticsearch.shardTimeout: 0
+#elasticsearch.startupTimeout: 5000
+#pid.file: /var/run/kibana.pid
+#logging.dest: stdout
+#logging.dest: /var/log/kibana.log
+#logging.silent: false
+#logging.quiet: false
+#logging.verbose: false
+#ops.interval: 5000

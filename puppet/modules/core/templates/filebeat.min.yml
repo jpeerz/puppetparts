@@ -1,0 +1,30 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /var/log/elasticsearch/*.log
+  #exclude_lines: ["^DBG"]
+  #include_lines: ["^ERR", "^WARN"]
+  #exclude_files: [".gz$"]
+  #fields:
+  #  level: debug
+  #  review: 1
+  #multiline.pattern: ^\[
+  #multiline.negate: false
+  #multiline.match: after
+name: "elk"
+tags: ["elk", "kibana", "logstash"]
+#fields:
+#  env: staging
+output.elasticsearch:
+  hosts: ["<%= @elasticsearch_server_ip %>:<%= @elasticsearch_server_port %>"]
+  #protocol: "https"
+  #username: "elastic"
+  #password: "changeme"
+#output.logstash:
+  #hosts: ["localhost:5044"]
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+  #ssl.certificate: "/etc/pki/client/cert.pem"
+  #ssl.key: "/etc/pki/client/cert.key"
+logging.level: debug
+#logging.selectors: ["*"]
+
