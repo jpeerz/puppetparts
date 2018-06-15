@@ -1,0 +1,85 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Base Ubuntu Xenial",
+    "Resources": {
+        "Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-db710fa3",
+                "InstanceType": "t2.micro",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SubnetId": {
+                    "Ref": "SubnetId"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "HttpSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "os",
+                        "Value": "ubuntu"
+                    }
+                ],
+                "UserData" : { "Fn::Base64" : { 
+                    "Fn::Join" : ["\n", 
+                            [
+                            "#!/bin/bash",
+                            "apt-get update",
+                            "apt update && apt install -y puppet git-core && git clone https://github.com/jpeerz/puppetparts.git /opt/puppetparts && cp /opt/puppetparts/puppet/modules/core/files/puppet.conf /etc/puppet/puppet.conf",
+                            "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/java.pp",
+                            "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/maven.pp"
+                            ]
+                        ]
+                    }
+                }
+            }
+        },
+        "HttpSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "web host",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "ToPort": "22"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "8383",
+                        "IpProtocol": "tcp",
+                        "ToPort": "8383"
+                    }
+                ],
+                "VpcId": {
+                    "Ref": "Vpc"
+                }
+            }
+        }
+    },
+    "Parameters": {
+        "KeyName": {
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing keys.",
+            "Description": "ssh key pair",
+            "Default":"webadmin"
+        },
+        "SubnetId": {
+            "Type": "AWS::EC2::Subnet::Id",
+            "ConstraintDescription": "must be an existing subnet.",
+            "Description": "subnet",
+            "Default":"vpc-5b3d0b3d"
+        },
+        "Vpc": {
+            "Type": "AWS::EC2::VPC::Id",
+            "ConstraintDescription": "please provide an existing vpc",
+            "Description": "vpc",
+            "Default":"subnet-5e1c6438"
+        }
+    }
+}
