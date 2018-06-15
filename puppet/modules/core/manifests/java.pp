@@ -21,7 +21,7 @@ exec { "java_refresh_apt":
     creates => "/usr/lib/jvm/java-8-oracle/bin/java",
     require => Exec["java_debconf"]
 }
-package { ["oracle-java8-installer", "oracle-java8-set-default", "oracle-java8-unlimited-jce-policy", "maven"]:
+package { ["oracle-java8-installer", "oracle-java8-set-default", "oracle-java8-unlimited-jce-policy"]:
     ensure => installed,
     require => Exec['java_refresh_apt']
 }
