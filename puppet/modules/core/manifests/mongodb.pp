@@ -30,7 +30,7 @@ package { "mongodb-org":
 file { "/etc/mongod.conf":
     ensure  => file,
     backup  => true,
-    content => template('orcid_mongodb/mongod.conf'),
+    content => template('core/mongod.conf'),
     require => Package["mongodb-org"]
 }
 
