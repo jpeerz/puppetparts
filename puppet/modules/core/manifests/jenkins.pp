@@ -49,7 +49,7 @@ file { "/etc/default/jenkins":
     ensure  => file,
     backup  => true,
     path    => '/etc/default/jenkins',
-    content => 'puppet://modules/core/etc_default_jenkins',
+    content => 'puppet:///modules/core/etc_default_jenkins',
     require => File["/var/lib/jenkins"]
 } 
 exec { "bypass_jenkins_initial_config":
