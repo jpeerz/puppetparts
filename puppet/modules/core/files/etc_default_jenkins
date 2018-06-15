@@ -21,4 +21,5 @@ PREFIX=/jenkins
 # --argumentsRealm.roles.$ADMIN_USER=admin
 # --webroot=~/.jenkins/war
 # --prefix=$PREFIX
-#JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1"
+# --httpListenAddress=127.0.0.1
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT"

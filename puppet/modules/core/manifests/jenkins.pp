@@ -51,13 +51,26 @@ file { "/etc/default/jenkins":
     path    => '/etc/default/jenkins',
     source  => 'puppet:///modules/core/etc_default_jenkins',
     require => File["/var/lib/jenkins"]
-} 
-exec { "bypass_jenkins_initial_config":
-    command => "mv /var/lib/jenkins/secrets/initialAdminPassword /opt/ && cat /opt/initialAdminPassword",
-    onlyif  => 'test -f /var/lib/jenkins/secrets/initialAdminPassword'
 }
 service { "jenkins":
     ensure    => running,
     enable    => true,
     subscribe => File['/etc/default/jenkins']
 }
+# exec { "bypass_jenkins_initial_config":
+#     command => "mv /var/lib/jenkins/secrets/initialAdminPassword /opt/ && cat /opt/initialAdminPassword",
+#     creates => '/opt/initialAdminPassword',
+#     require => File["/var/lib/jenkins"]
+# }
+# # https://github.com/geerlingguy/ansible-role-jenkins/issues/50
+# file { "/var/lib/jenkins/init.groovy.d":
+#     ensure  => directory,
+#     backup  => true,
+#     require => File["/var/lib/jenkins"]
+# }
+# file { "/var/lib/jenkins/init.groovy.d/basic-security.groovy":
+#     ensure  => file,
+#     backup  => true,
+#     source  => 'puppet:///modules/core/basic-security.groovy',
+#     require => File["/var/lib/jenkins/init.groovy.d"]
+# }
