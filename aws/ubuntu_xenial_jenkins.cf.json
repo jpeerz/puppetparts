@@ -7,6 +7,14 @@
             "Properties": {
                 "ImageId": "ami-db710fa3",
                 "InstanceType": "t2.micro",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "VolumeSize": "30"
+                        }
+                    }
+                ],
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -29,9 +37,10 @@
                             [
                             "#!/bin/bash",
                             "apt-get update",
-                            "apt update && apt install -y puppet git-core && git clone https://github.com/jpeerz/puppetparts.git /opt/puppetparts && cp /opt/puppetparts/puppet/modules/core/files/puppet.conf /etc/puppet/puppet.conf",
+                            "apt install -y puppet git-core && git clone https://github.com/jpeerz/puppetparts.git /opt/puppetparts && cp /opt/puppetparts/puppet/modules/core/files/puppet.conf /etc/puppet/puppet.conf",
                             "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/java.pp",
-                            "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/maven.pp"
+                            "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/maven.pp",
+                            "puppet apply --environment localhost --modulepath /opt/puppetparts/puppet/modules:/etc/puppet/modules /opt/puppetparts/puppet/modules/core/manifests/jenkins.pp"
                             ]
                         ]
                     }

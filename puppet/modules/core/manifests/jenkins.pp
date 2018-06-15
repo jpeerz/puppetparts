@@ -14,8 +14,8 @@ exec { "install_jenkins_repo":
     require => Exec["install_jenkins_key"]
 }
 exec { "update_ubuntu_repos":
-    command => "sudo apt-get update > /dev/null",
-    creates => '/etc/apt/sources.list.d/jenkins.list',
+    command => "apt-get update > /dev/null",
+    creates => '/usr/share/jenkins',
     require => Exec["install_jenkins_repo"]
 }
 package { "jenkins":
@@ -53,7 +53,7 @@ file { "/etc/default/jenkins":
     require => File["/var/lib/jenkins"]
 } 
 exec { "bypass_jenkins_initial_config":
-    command => "rm -f /var/lib/jenkins/secrets/initialAdminPassword",
+    command => "mv /var/lib/jenkins/secrets/initialAdminPassword /opt/ && cat /opt/initialAdminPassword",
     onlyif  => 'test -f /var/lib/jenkins/secrets/initialAdminPassword'
 }
 service { "jenkins":
