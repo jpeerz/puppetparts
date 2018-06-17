@@ -19,7 +19,7 @@ exec { "install_npm_pm2":
 exec { "install_npm_bower":
     require => Exec["install_nodejs"],
     path    => "/usr/bin",
-    command => "/usr/bin/npm install bower -g",
+    command => "/usr/bin/npm install -g bower",
     creates => "/usr/bin/bower"
 }
 

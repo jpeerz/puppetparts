@@ -1,6 +1,7 @@
 Exec {
   path => ["/usr/bin", "/bin", "/usr/sbin", "/sbin", "/usr/local/bin", "/usr/local/sbin"]
 }
+$docker_owner = 'ubuntu'
 exec { "docker_install_apt_key":
     onlyif  => "test $(apt-key list | grep docker | wc -l) -eq 0",
     command => "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
@@ -18,4 +19,8 @@ exec { "docker_upgate_ubuntu_packages_db":
 package{"docker-ce": 
     ensure  => installed,
     require => Exec['docker_upgate_ubuntu_packages_db']
+}
+exec { "docker_add_user_to_grp":
+    command => "usermod -aG docker $docker_owner",
+    require => Exec['docker_add_repo']
 }
